@@ -1,55 +1,73 @@
 #include <bits/stdc++.h>
 
 using namespace std;
-//1744BOJ
 
+int negative[51];
+int zero[51];
+int positive[51];
+int one[51];
 
-int main() {
-    int T;
-    cin>>T;
-    //구분할 게, 음수, 0, 1, 양수이다.
-    //음수는 음수끼리 묶는다, 양수도 양수끼리 묶는다
-    //음수가 홀수개라면 하나는 0과 묶는다.
-    //1은 절대 묶지 않는다.
-    vector<int> one;
-    vector<int> minus;
-    vector<int> zero;
-    vector<int> plus;
-    
-    for(int i=0;i<T;i++){
+int main(){
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    int n_ind=0, z_ind=0, p_ind=0;
+    int one_ind=0;
+    int n;
+    cin>>n;
+    for(int i=1;i<=n;i++){
         int num;
         cin>>num;
-        if(num==1) one.push_back(num);
-        else if(num==0) zero.push_back(num);
-        else if(num<0) minus.push_back(num);
-        else plus.push_back(num);
-    }
-    
-    sort(minus.begin(), minus.end());
-    sort(plus.begin(), plus.end());
-    
-    //cout<<plus.size();
-    
-    int sum=0;
-    
-    if(minus.size()%2==0){
-        for(int i=0;i<minus.size();i+=2) sum+=minus.at(i)*minus.at(i+1);
-    }
-    else{
-        if(minus.size()>=3) for(int i=0;i<minus.size()-1;i+=2) sum+=minus.at(i)*minus.at(i+1);
-        if(zero.size()==0){//0이 없다면
-            sum+=minus.at(minus.size()-1);
+
+        if(num>0){
+            if(num==1) one[one_ind++]=num;
+            else positive[p_ind++]=num;
         }
-        //0이 있었다면 안 더해도 됐겠지
+        else if(num<0) negative[n_ind++]=num;
+        else zero[z_ind++] = num;
+    }
+
+    sort(negative, negative+n_ind);
+    sort(positive, positive+p_ind);
+
+    int ans=0;
+    
+    if(n_ind>0 && n_ind%2==0){
+        //음수가 존재하는데 짝수개? 그럼 걍 곱해주면 돼
+        for(int i=0;i<=n_ind-1;i+=2){
+            ans += (negative[i]*negative[i+1]);
+        }
+    }
+    else if(n_ind>0 && n_ind%2!=0){
+        //이때 0의 존재가 활약하는거임
+        if(z_ind>0){
+            //일단 0이 존재한다면 남는 하나를 걍 처리할 수 있어 즉, 짝수개인 것처럼 해도 무관
+            for(int i=0;i<n_ind-1;i+=2){
+                ans += (negative[i]*negative[i+1]);
+            }
+        }
+
+        //근데 0이 없다면? 짝을 지어서 하다가, 나머지는 제일 작은놈은 그냥 해야지 뭐
+        else{
+            for(int i=0;i<n_ind-1;i+=2){
+                ans += (negative[i]*negative[i+1]);
+            }
+            ans+=negative[n_ind-1];
+        }
+    }
+
+    if(p_ind%2==0){
+        for(int i=p_ind-1; i>=1; i-=2){
+            ans += (positive[i]*positive[i-1]);
+        }
+    }
+    else if(p_ind%2!=0){
+        for(int i=p_ind-1; i>1; i-=2){
+            ans += (positive[i]*positive[i-1]);
+        }
+
+        ans+=positive[0];
     }
     
-    if(plus.size()%2==0) for(int i=plus.size()-1;i>=0;i-=2) sum+=plus.at(i)*plus.at(i-1);
-    else{
-        for(int i=plus.size()-1;i>=1;i-=2) sum+=plus.at(i)*plus.at(i-1);
-        sum+=plus.at(0);
-    }
-    
-    sum+=one.size();
-    cout<<sum;
-    
+    cout<<ans+one_ind;
+
 }
