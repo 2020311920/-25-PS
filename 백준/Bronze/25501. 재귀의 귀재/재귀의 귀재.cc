@@ -1,34 +1,37 @@
-#include <bits/stdc++.h>
-
-using namespace std;
+#include <stdio.h>
+#include <string.h>
 
 int n;
-string s;
-int cnt=1;
+char str[1001];
+int cnt=0;
 
-void isPalindrome(int l, int r){
-    if(l>=r){
-        cout<<1<<" "<<cnt<<"\n";
-        cnt=1;
-        return;
+int recursion(const char *s, int l, int r){
+    cnt++;
+    if(l >= r){
+        printf("1 %d\n", cnt);
+        cnt=0;
+        return 0;
     }
-    else if(s[l]!=s[r]){
-        cout<<0<<" "<<cnt<<"\n";
-        cnt=1;
-        return;
+    else if(s[l] != s[r]){
+        printf("0 %d\n", cnt);
+        cnt=0;
+        return 0;
     }
-    else{
-        cnt++;
-        isPalindrome(l+1, r-1);
-    }
+    else return recursion(s, l+1, r-1);
 }
 
+int isPalindrome(const char *s){
+    return recursion(s, 0, strlen(s)-1);
+}
+
+
+
 int main(){
-    cin>>n;
+    scanf("%d", &n);
 
     for(int i=1;i<=n;i++){
-        cin>>s;
+        scanf("%s", str);
 
-        isPalindrome(0, s.length()-1);
+        isPalindrome(str);
     }
 }
