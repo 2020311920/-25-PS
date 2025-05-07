@@ -1,35 +1,31 @@
-#include <iostream>
-#include <vector>
+#include <bits/stdc++.h>
+
 using namespace std;
-int N, lenK, answer;
-vector<int> K;
-void recur(int num)
-{
-    if (N < num) // N보다 큰 경우
-    {
-        return;
-    }
-    answer = max(answer, num);
 
-    num *= 10; // 자리 늘리기
+int limit, n;
+int arr[4];
+int ans_max = 0;
 
-    for (int i = 0; i < lenK; ++i)
-    {
-        recur(num + K[i]);
+void func(int num){
+
+    if(num>limit) return;
+    if(ans_max < num) ans_max = num;
+
+    for(int i=1;i<=n;i++){
+        num = num*10 + arr[i];
+        func(num);
+        num = (num-arr[i])/10;
     }
+    
 }
-int main()
-{
-    ios::sync_with_stdio(0), cin.tie(0);
 
-    cin >> N >> lenK;
-    K = vector<int>(lenK);
-    for (int &k : K)
-    {
-        cin >> k;
+int main(){
+    cin>>limit>>n;
+    for(int i=1;i<=n;i++){
+        cin>>arr[i];
     }
+    
 
-    recur(0);
-    cout << answer;
-    return 0;
+    func(0);
+    cout<<ans_max;
 }
