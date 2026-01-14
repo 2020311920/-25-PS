@@ -9,13 +9,19 @@ int main(){
 
     //그냥 돌리면 무조건 터지는 케이스
     //h=1부터 n씩, w=1부터 m씩
-    int cnt=0;
-    for(int i=1;i<=h;i+=(n+1)){
-        for(int j=1;j<=w;j+=(m+1)){
-            //cout<<i<<","<<j<<"에 앉음\n";
-            cnt++;
-        }
-    }
+    // int cnt=0;
+    // for(int i=1;i<=h;i+=(n+1)){
+    //     for(int j=1;j<=w;j+=(m+1)){
+    //         //cout<<i<<","<<j<<"에 앉음\n";
+    //         cnt++;
+    //     }
+    // }
 
-    cout<<cnt;
+    // cout<<cnt;
+
+    //아니 생각해보니 수학으로 풀면 되네
+    int availX =( (h % (1+n)) == 0 ? h/(n+1) : h/(n+1) +1);
+    int availY =( (w % (1+m)) == 0 ? w/(m+1) : w/(m+1) +1);
+    
+    cout<<availX*availY;
 }
