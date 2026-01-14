@@ -31,7 +31,7 @@ int travel(int startCol){
 
 void dfs(int k, int x, int y){
 
-    if(k>3){
+    if(k>3 || minSum==0){
         return;
     }
 
