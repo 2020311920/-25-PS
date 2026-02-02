@@ -16,53 +16,42 @@ void input(){
 }
 
 bool isCovered(int h){
-    int field[100001];
-    for(int i=0;i<=n;i++) field[i]=0;
+    int leftCovered=0;
     for(int i=0;i<m;i++){
-        for(int j=v[i]-h ; j<=v[i]+h; j++){
-            if(j>=0 && j<=n) field[j]=1;
-        }
+        if(v[i]-h <= leftCovered) leftCovered = v[i]+h;
     }
-
-    bool covered = true;
-    for(int i=0;i<=n;i++){
-        if(field[i]==0){
-            covered=false;
-            break;
-        }
-    }
-    return covered;
+    if(leftCovered>=n) return true;
+    else return false;
 }
 
 void solution(){
-    // //이분탐색이 맞는 것 같다
-    // int l = 1; int r = n;
-    // int height = l;
-    // while(l<=r){
-    //     height = (l+r)/2;
+    //이분탐색이 맞는 것 같다
+    int l = 0; int r = n;
+    while(l<=r){
+        int height = (l+r)/2;
 
-    //     if(isCovered(height)){
-    //         //높이 충분
-    //         r = height-1;
-    //     }
-    //     else{
-    //         //높이 불충분
-    //         l = height+1;
-    //     }
-    // }
-
-    // cout<<height;
-
-    maxDist = max(v[0]-0, n-v[m-1]);
-
-    for(int i=0;i<m-1;i++){
-        int dist = v[i+1]-v[i];
-        if(dist%2!=0) dist+=1;
-        dist/=2;
-        maxDist = max(maxDist, dist);
+        if(isCovered(height)){
+            //높이 충분
+            r = height-1;
+        }
+        else{
+            //높이 불충분
+            l = height+1;
+        }
     }
 
-    cout<<maxDist;
+    cout<<l;
+
+    // maxDist = max(v[0]-0, n-v[m-1]);
+
+    // for(int i=0;i<m-1;i++){
+    //     int dist = v[i+1]-v[i];
+    //     if(dist%2!=0) dist+=1;
+    //     dist/=2;
+    //     maxDist = max(maxDist, dist);
+    // }
+
+    // cout<<maxDist;
 }
 
 int main(){
