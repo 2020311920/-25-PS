@@ -9,65 +9,30 @@ using namespace std;
 
 int n,k,p,x;
 
-int digital[10][7]={
-    {1,1,1,0,1,1,1},//0
-    {0,0,1,0,0,1,0},//1
-    {1,0,1,1,1,0,1},//2
-    {1,0,1,1,0,1,1},//3
-    {0,1,1,1,0,1,0},//4
-    {1,1,0,1,0,1,1},//5
-    {1,1,0,1,1,1,1},//6
-    {1,0,1,0,0,1,0},//7
-    {1,1,1,1,1,1,1},//8
-    {1,1,1,1,0,1,1}//9
+// int digital[10][7]={
+//     {1,1,1,0,1,1,1},//0
+//     {0,0,1,0,0,1,0},//1
+//     {1,0,1,1,1,0,1},//2
+//     {1,0,1,1,0,1,1},//3
+//     {0,1,1,1,0,1,0},//4
+//     {1,1,0,1,0,1,1},//5
+//     {1,1,0,1,1,1,1},//6
+//     {1,0,1,0,0,1,0},//7
+//     {1,1,1,1,1,1,1},//8
+//     {1,1,1,1,0,1,1}//9
+// };
+int digital[10]={
+    /*0*/ 0b1110111,
+    /*1*/ 0b0100100,
+    /*2*/ 0b1011101,
+    /*3*/ 0b1101101,
+    /*4*/ 0b0101110,
+    /*5*/ 0b1101011,
+    /*6*/ 0b1111011,
+    /*7*/ 0b0100101,
+    /*8*/ 0b1111111,
+    /*9*/ 0b1101111
 };
-void testPrint(int num){
-    for(int i=0;i<1;i++){
-        if(digital[num][i]==1){
-            cout<<" - ";
-        }
-        else if(digital[num][i]==0){
-            cout<<"   ";
-        }
-    }
-    cout<<"\n";
-    for(int i=1;i<3;i++){
-        if(digital[num][i]==1){
-            cout<<"I ";
-        }
-        else if(digital[num][i]==0){
-            cout<<"  ";
-        }
-    }
-    cout<<"\n";
-    for(int i=3;i<4;i++){
-        if(digital[num][i]==1){
-            cout<<" - ";
-        }
-        else if(digital[num][i]==0){
-            cout<<"   ";
-        }
-    }
-    cout<<"\n";
-    for(int i=4;i<6;i++){
-        if(digital[num][i]==1){
-            cout<<"I ";
-        }
-        else if(digital[num][i]==0){
-            cout<<"  ";
-        }
-    }
-    cout<<"\n";
-    for(int i=6;i<7;i++){
-        if(digital[num][i]==1){
-            cout<<" - ";
-        }
-        else if(digital[num][i]==0){
-            cout<<"   ";
-        }
-    }
-    cout<<"\n";
-}
 
 int myPow(int a, int k){
     //a의 k승
@@ -80,8 +45,14 @@ int myPow(int a, int k){
 
 int howManyDifferent(int a, int b){
     int cnt=0;
-    for(int i=0;i<7;i++){
-        if(digital[a][i]!=digital[b][i]) cnt++;
+    // for(int i=0;i<7;i++){
+    //     if(digital[a][i]!=digital[b][i]) cnt++;
+    // }
+    int result = digital[a]^digital[b];
+    //여기서 어떻게 result를 바탕으로 1인 비트의 개수를 구하지?
+    while(result){
+        result &= (result-1);
+        cnt++;
     }
     return cnt;
 }
