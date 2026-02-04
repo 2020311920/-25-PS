@@ -1,97 +1,41 @@
-#include <bits/stdc++.h>
+//대박이다 이 풀이...
 
+#include <bits/stdc++.h>
 using namespace std;
 
-int n;
-int sum;
-struct coin{
-    int price;
-    int num;
-};
-vector<coin> coins;
-bool found = false;
+struct Coin { int price, num; };
 
-bool compare(const coin &c1, const coin &c2){
-    return c1.price>c2.price;
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
 
-}
+    for (int tc = 0; tc < 3; tc++) {
+        int n; 
+        cin >> n;
+        vector<Coin> coins(n);
+        int sum = 0;
+        for (int i = 0; i < n; i++) {
+            cin >> coins[i].price >> coins[i].num;
+            sum += coins[i].price * coins[i].num;
+        }
 
-//int selected[101];
+        if (sum % 2) {
+            cout << 0 << "\n";
+            continue;
+        }
+        int target = sum / 2;
 
-int dp[101][100001];//dp[i][j] -> i번째 코인부터 골라서 j원을 만들 수 있나요? 0 미확인, 1실패, 2성공
+        vector<int> dp(target + 1, -1);
+        dp[0] = 0; // 0원은 만들 수 있고, "현재 코인 남은 개수" 의미는 이후에 세팅됨
 
-int dpFunc(int ind, int goal){
-    if(goal==0){
-        dp[ind][goal] = 2;
-        return 2;
-    }
-    if(ind==n){
-        dp[ind][goal]=1;
-        return 1;
-    }
-    if(dp[ind][goal]==2) return 2;
-    if(dp[ind][goal]==1) return 1;
-    if(goal%coins[ind].price==0 && coins[ind].num >= (goal/coins[ind].price)){
-        dp[ind][goal] = 2;
-        return 2;
-    }
-    //ind번째 코인을 몇개 골랐다고 치고 
-    int tempFound = 0;
-    for(int i=0;i<=coins[ind].num;i++){
-        if(i*coins[ind].price<=goal){
-            //ind번쨰 코인을 i개 택했다고 치면
-            tempFound = dpFunc(ind+1, goal-(coins[ind].price*i));
-            if(tempFound==2){
-                dp[ind][goal] = 2;
-                break;
+        for (auto &c : coins) {
+            for (int j = 0; j <= target; j++) {
+                if (dp[j] >= 0) dp[j] = c.num;               // 이전 코인들로 j 가능 -> 이번 코인 num개로 리셋
+                else if (j >= c.price && dp[j - c.price] > 0) // j-price가 가능했고 이번 코인 남아있으면
+                    dp[j] = dp[j - c.price] - 1;
             }
         }
+
+        cout << (dp[target] >= 0 ? 1 : 0) << "\n";
     }
-
-    if(tempFound!=2) dp[ind][goal] = 1;
-    return dp[ind][goal];
-}
-
-int possible(){
-    //coins들 중에서 sum/2를 만들 수만 있다면 되는 거잖아요?
-    sort(coins.begin(), coins.end(), compare);
-    
-    //dfs(0, 0);
-    return dpFunc(0, sum/2);
-}
-
-void solution(){
-    //cout<<"sum = "<<sum<<"\n";
-    //cout<<selected[1]<<"\n";
-    if(sum%2==0){
-        if(possible()==2) cout<<1<<"\n";
-        else cout<<0<<"\n";
-    }
-    else cout<<0<<"\n";
-}
-
-void input(){
-    for(int i=1;i<=3;i++){
-        memset(dp,0,sizeof(dp));
-        coins.clear();
-        found=false;
-        sum=0;
-        cin>>n;
-        for(int j=1;j<=n;j++){
-            int price; int num;
-            cin>>price>>num;
-            coins.push_back(coin{price, num});
-            sum += (price*num);
-            //selected[j] = num;
-        }
-
-        solution();
-    }
-}
-
-int main(){
-    ios::sync_with_stdio(0);
-    cin.tie(0);
-
-    input();
 }
