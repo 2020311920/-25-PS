@@ -16,10 +16,10 @@ void testPrint(stack<pair<int, int>> s){
 
 //스택상태를 확인하고 폭탄 완성 시 즉시 제외하는 함수
 //왜냐 폭탄 길이가 1일 수도 있어서
-void bombDelete(deque<pair<int, int>> &s){
-    if(s.back().second == bomb.size()-1){
+void bombDelete(stack<pair<int, int>> &s){
+    if(s.top().second == bomb.size()-1){
         int num = bomb.size();
-        while(num--) s.pop_back();
+        while(num--) s.pop();
     }
 }
 
@@ -46,18 +46,18 @@ void solution(){
     1-2-2. 끝까지 없다면 현재 위치 문자가 애초에 bomb 문자와는 다르다는 것이므로 -1로 하여 stack에 넣는다.*/
 
     //이를 위해 stack이 비어있다면 현재 위치의 문자가 bomb의 0번 자리와 일치하는지 보고 -1로 넣을지 0으로 넣을지 결정한다.
-    deque<pair<int, int>> s;
+    stack<pair<int, int>> s;
     for(auto i : str){
         //testPrint(s);
         if(s.empty()){
             //i는 현재 위치의 문자
             if(i==bomb[0]){
                 //같으니까 0으로 s에 삽입
-                s.push_back({i,0});
+                s.push({i,0});
             }
             else{
                 //애초에 시작점과 문자가 다르니까 -1로 삽입
-                s.push_back({i,-1});
+                s.push({i,-1});
             }
 
             //폭탄의 길이가 1일수도 있어서 
@@ -65,11 +65,11 @@ void solution(){
         }
         else{
             //일단 top의 순번을 파악
-            int element =  s.back().first;
-            int num = s.back().second;
+            int element =  s.top().first;
+            int num = s.top().second;
             if(i==bomb[num+1]){
                 //즉, 지금 위치가 이전거에 이어지는 폭탄의 일종이라면
-                s.push_back({i,num+1});
+                s.push({i,num+1});
                 //그러고 폭탄이 완성됐는지 아닌지
                 bombDelete(s);
             }
@@ -80,7 +80,7 @@ void solution(){
                     if(bomb[ind]==element){
                         //있다면 다시 확인
                         if(i==bomb[ind+1]){
-                            s.push_back({i, ind+1});
+                            s.push({i, ind+1});
                             break;
                         }
                         //아니면 계속 이어서 역으로 탐색
@@ -92,18 +92,21 @@ void solution(){
                 //끝까지 탐색했다는 사실
                 //즉, 가장 최근 문자가 이전에 동일하게 있어서 그 다음과 현재가 일치하는 경우가 없다는 거니까
                 //현재 문자가 시작점과 일치하는지 체크
-                if(i==bomb[0]) s.push_back({i,0});
-                else s.push_back({i,-1});
+                if(i==bomb[0]) s.push({i,0});
+                else s.push({i,-1});
             }
         }
     }
     
     if(s.empty()) cout<<"FRULA";
     else{
+        string result="";
         while(!s.empty()){
-            cout<<char(s.front().first);
-            s.pop_front();
+            result+=s.top().first;
+            s.pop();
         }
+        reverse(result.begin(), result.end());
+        cout<<result;
     }
 }
 
