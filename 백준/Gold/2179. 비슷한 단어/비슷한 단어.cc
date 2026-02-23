@@ -30,7 +30,7 @@ void input(){
     
 }
 
-void backtrack(int index, vector<vector<pair<int, string>>> s){
+void backtrack(int index, vector<vector<pair<int, string>>>& s){
     //index번 인덱스로 분류 시작    
     // for(int i=0;i<26;i++){
     //     cout<<i<<" : ";
