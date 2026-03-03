@@ -61,14 +61,14 @@ pair<int,int> bfs(int startX, int startY, int blockInd){
     return {borderLine, cnt};
 }
 
-priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> ansBlock; //{둘레, 인덱스}
+//priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> ansBlock; //{둘레, 인덱스}
 
 void solution(){
     //iceCream의 모든 좌표들을 시작점으로 해서 덩어리를 구하는거지 ㅇㅇ
     int iceCreamNum = iceCream.size();
     int blockInd=1;
     int maxBlockSize = 0;
-    
+    int minBorderLine = 2100000000;
     for(int i=0;i<iceCreamNum;i++){
         int x = iceCream[i].first; int y = iceCream[i].second;
 
@@ -78,12 +78,12 @@ void solution(){
             auto blockInfo = bfs(x,y, blockInd);
             if(maxBlockSize<blockInfo.second){
                 //최신화
-                while(!ansBlock.empty()) ansBlock.pop();
+                //while(!ansBlock.empty()) ansBlock.pop();
                 maxBlockSize = blockInfo.second;
-                ansBlock.push(blockInfo);
+                minBorderLine = blockInfo.first;
             }
             else if(maxBlockSize == blockInfo.second){
-                ansBlock.push(blockInfo);
+                minBorderLine = min(minBorderLine, blockInfo.first);
             }
             blockInd++;
         }
@@ -91,12 +91,12 @@ void solution(){
     //visited에 blockInd가 여러개로 막 표시가 됐을 것이야
 
     //sort(ansBlock.begin(), ansBlock.end());
-    cout<<ansBlock.top().second<<" "<<ansBlock.top().first;
+    cout<<maxBlockSize<<" "<<minBorderLine;
 }
 
 int main(){
-    ios::sync_with_stdio(0);
-    cin.tie(0);
+    ios_base::sync_with_stdio(0);
+    cin.tie(0), cout.tie(0);
 
     input();
     solution();
