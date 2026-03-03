@@ -4,21 +4,30 @@ using namespace std;
 
 int n;
 //vector<pair<int, int>> iceCream;
-int field[1001][1001];
+char field[1001][1001];
 
-int visited[1001][1001];
+bool visited[1001][1001];
 
 void input(){
     cin>>n;
+    // for(int i=1;i<=n;i++){
+    //     for(int j=1;j<=n;j++){
+    //         char ch;
+    //         cin>>ch;
+    //         if(ch=='#'){
+    //             field[i][j]=1;
+    //             //iceCream.push_back({i,j});
+    //         }
+    //         if(ch=='.') field[i][j]=2;
+    //     }
+    // }
+
     for(int i=1;i<=n;i++){
-        for(int j=1;j<=n;j++){
-            char ch;
-            cin>>ch;
-            if(ch=='#'){
-                field[i][j]=1;
-                //iceCream.push_back({i,j});
-            }
-            if(ch=='.') field[i][j]=2;
+        string str;
+        cin>>str;
+        for(int j=0;j<n;j++){
+            if(str[j]=='#') field[i][j+1]=1;
+            if(str[j]=='.') field[i][j+1]=2;
         }
     }
 }
