@@ -61,7 +61,7 @@ pair<int,int> bfs(int startX, int startY, int blockInd){
     return {borderLine, cnt};
 }
 
-vector<pair<int, int>> ansBlock; //{둘레, 인덱스}
+priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> ansBlock; //{둘레, 인덱스}
 
 void solution(){
     //iceCream의 모든 좌표들을 시작점으로 해서 덩어리를 구하는거지 ㅇㅇ
@@ -78,20 +78,20 @@ void solution(){
             auto blockInfo = bfs(x,y, blockInd);
             if(maxBlockSize<blockInfo.second){
                 //최신화
-                ansBlock.clear();
+                while(!ansBlock.empty()) ansBlock.pop();
                 maxBlockSize = blockInfo.second;
-                ansBlock.push_back(blockInfo);
+                ansBlock.push(blockInfo);
             }
             else if(maxBlockSize == blockInfo.second){
-                ansBlock.push_back(blockInfo);
+                ansBlock.push(blockInfo);
             }
             blockInd++;
         }
     }
     //visited에 blockInd가 여러개로 막 표시가 됐을 것이야
 
-    sort(ansBlock.begin(), ansBlock.end());
-    cout<<ansBlock[0].second<<" "<<ansBlock[0].first;
+    //sort(ansBlock.begin(), ansBlock.end());
+    cout<<ansBlock.top().second<<" "<<ansBlock.top().first;
 }
 
 int main(){
