@@ -4,7 +4,7 @@ using namespace std;
 
 int n;
 vector<pair<int, int>> iceCream;
-int field[1001][1001];
+char field[1001][1001];
 
 int visited[1001][1001];
 
