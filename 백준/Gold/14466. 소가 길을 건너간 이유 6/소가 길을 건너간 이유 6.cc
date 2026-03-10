@@ -65,14 +65,16 @@ void input(){
 }
 
 int ans=0;
+int visited[101][101];
 
 void BFS(int i){
-    vector<vector<int>> visited;
-    for(int a=1;a<=n+1;a++){
-        vector<int> v;
-        v.assign(n+1,0);
-        visited.push_back(v);
-    }
+    // vector<vector<int>> visited;
+    // for(int a=1;a<=n+1;a++){
+    //     vector<int> v;
+    //     v.assign(n+1,0);
+    //     visited.push_back(v);
+    // }
+    memset(visited,0,sizeof(visited));
     //전부 0으로 채워진 visited를 만든다. 1,1~n,n까지 존재
     int sx = cows[i].first; int sy = cows[i].second;
 
